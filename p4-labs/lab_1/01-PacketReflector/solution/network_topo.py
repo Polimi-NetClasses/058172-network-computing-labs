@@ -7,7 +7,7 @@ net.setLogLevel('info')
 
 # Network definition
 net.addP4Switch('s1')
-net.setP4Source('s1','reflector.p4')
+net.setP4Source('s1','./packet_reflector.p4')
 net.addHost('h1')
 net.addLink('s1', 'h1')
 
