@@ -24,30 +24,25 @@ def isNotOutgoing(my_mac):
 
     return _isNotOutgoing
 
-def handle_pkt(pkt):
+totals = {}
 
-    print("Packet Received:")
+def handle_pkt(pkt):
     ether = pkt.getlayer(Ether)
     ip = pkt.getlayer(IP)
     msg = ip.payload
 
-    print("###[ Ethernet ]###")
-    print("  src: {}".format(ether.src))
-    print("  dst: {}".format(ether.dst))
-    # check if packet has vlan header
-    if pkt.haslayer(Dot1Q):
-        vlan = pkt.getlayer(Dot1Q)
-        print("###[ VLAN ]###")
-        print("  pri: {}".format(vlan.prio))
-        print("  dei: {}".format(vlan.id))
-        print("  vlan id: {}".format(vlan.vlan))
-    
-    print("###[ IP ]###")
-    print("  src: {}".format(ip.src))
-    print("  dst: {}".format(ip.dst))
-    print("###[ MESSAGE ]###")
-    print("  msg: {}".format(str(msg)))
-    print()
+    eth_src = ether.src
+    eth_dst = ether.dst
+    src_ip = ip.src
+    dst_ip = ip.dst
+    msg = str(msg)
+
+    if src_ip not in totals:
+        totals[src_ip] = 0
+    totals[src_ip] += 1
+
+    id_tup = (eth_src, eth_dst, src_ip, dst_ip, msg)
+    print("Received from %s total: %s" % (id_tup, totals[src_ip]))
 
 def main():
     ifaces = [i for i in os.listdir('/sys/class/net/') if 'eth' in i]
