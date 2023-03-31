@@ -4,7 +4,7 @@
 # All Rights Reserved.
 
 from scapy.all import sniff, get_if_list, get_if_hwaddr
-from scapy.all import IP, TCP, Ether
+from scapy.all import IP, TCP, Ether, UDP
 
 def get_if():
     ifs=get_if_list()
@@ -24,12 +24,18 @@ iface = get_if()
 
 
 def handle_pkt(pkt):
-    if IP in pkt and TCP in pkt:
+    if IP in pkt:
         src_ip = pkt[IP].src
         dst_ip = pkt[IP].dst
         proto = pkt[IP].proto
-        sport = pkt[TCP].sport
-        dport = pkt[TCP].dport
+        if TCP in pkt:
+            sport = pkt[TCP].sport
+            dport = pkt[TCP].dport
+        elif UDP in pkt:
+            sport = pkt[UDP].sport
+            dport = pkt[UDP].dport
+        else:
+            return
         id_tup = (src_ip, dst_ip, proto, sport, dport)
 
         #filter packets that are sent from this interface. This is done to just focus on the receiving ones.
