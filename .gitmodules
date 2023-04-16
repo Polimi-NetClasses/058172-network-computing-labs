@@ -1,0 +1,12 @@
+[submodule "ebpf-labs/lab_1/libs/libbpf"]
+	path = ebpf-labs/libs/libbpf
+	url = https://github.com/libbpf/libbpf.git
+[submodule "ebpf-labs/lab_1/libs/bpftool"]
+	path = ebpf-labs/libs/bpftool
+	url = https://github.com/libbpf/bpftool.git
+[submodule "ebpf-labs/lab_1/libs/libargparse"]
+	path = ebpf-labs/libs/libargparse
+	url = https://github.com/cofyc/argparse.git
+[submodule "ebpf-labs/lab_1/libs/liblog"]
+	path = ebpf-labs/libs/liblog
+	url = https://github.com/rxi/log.c.git
