@@ -10,3 +10,6 @@
 [submodule "ebpf-labs/lab_1/libs/liblog"]
 	path = ebpf-labs/libs/liblog
 	url = https://github.com/rxi/log.c.git
+[submodule "ebpf-labs/libs/libcyaml"]
+	path = ebpf-labs/libs/libcyaml
+	url = https://github.com/tlsa/libcyaml.git
