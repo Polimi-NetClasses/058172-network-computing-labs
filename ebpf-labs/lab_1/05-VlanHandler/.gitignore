@@ -1,4 +1,3 @@
 .output
 vlan_handler
 xdp_loader
-ebpf/solution
