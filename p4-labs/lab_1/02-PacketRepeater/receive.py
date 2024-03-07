@@ -25,11 +25,15 @@ def isNotOutgoing(my_mac):
     return _isNotOutgoing
 
 def handle_pkt(pkt):
-
     print("Packet Received:")
     ether = pkt.getlayer(Ether)
     ip = pkt.getlayer(IP)
     msg = ip.payload
+
+    try:
+        decoded_msg = msg.load.decode('utf-8')
+    except UnicodeDecodeError:
+        decoded_msg = "Could not decode message."
 
     print("###[ Ethernet ]###")
     print("  src: {}".format(ether.src))
@@ -38,7 +42,7 @@ def handle_pkt(pkt):
     print("  src: {}".format(ip.src))
     print("  dst: {}".format(ip.dst))
     print("###[ MESSAGE ]###")
-    print("  msg: {}".format(str(msg)))
+    print("  msg: {}".format(str(decoded_msg)))
     print()
 
 def main():

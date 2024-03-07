@@ -10,6 +10,7 @@ import argparse
 
 from scapy.all import sendp, get_if_list, get_if_hwaddr
 from scapy.all import Ether, IP, UDP, TCP
+from scapy.all import Raw
 
 def get_if():
     ifs=get_if_list()
@@ -56,7 +57,7 @@ def main():
 
     print("Sending on interface %s to %s" % (iface, str(addr)))
     pkt =  Ether(src=get_if_hwaddr(iface), dst=ether_dst)
-    pkt = pkt /IP(dst=addr,tos=tos) / message
+    pkt = pkt / IP(dst=addr,tos=tos) / Raw(load=message)
     sendp(pkt, iface=iface, verbose=False)
 
 
