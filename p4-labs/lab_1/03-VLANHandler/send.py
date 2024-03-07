@@ -10,6 +10,7 @@ import argparse
 
 from scapy.all import sendp, get_if_list, get_if_hwaddr
 from scapy.all import Ether, IP, UDP, TCP, Dot1Q
+from scapy.all import Raw
 
 def get_if():
     ifs=get_if_list()
@@ -68,7 +69,7 @@ def main():
         # Add VLAN header to pkt
         pkt = pkt / Dot1Q(vlan=vlan_id)
     
-    pkt = pkt /IP(dst=addr,tos=tos) / message
+    pkt = pkt /IP(dst=addr,tos=tos) / Raw(load=message)
     sendp(pkt, iface=iface, verbose=False)
 
 
