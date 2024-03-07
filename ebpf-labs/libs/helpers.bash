@@ -28,6 +28,8 @@ function create_link {
   for i in `seq 1 $1`;
   do
   	sudo ip link add link${i}1 type veth peer name link${i}2
+    echo 0 > /proc/sys/net/ipv6/conf/link${i}1/disable_ipv6
+    echo 0 > /proc/sys/net/ipv6/conf/link${i}2/disable_ipv6
   	sudo ip link set dev link${i}1 up
   	sudo ip link set dev link${i}2 up
   done
