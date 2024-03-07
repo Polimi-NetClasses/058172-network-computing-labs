@@ -57,6 +57,12 @@ int xdp_packet_rewriting(struct xdp_md *ctx) {
 
    eth_type = parse_ethhdr(data, data_end, &nf_off, &eth);
 
+   /* If the packet is ARP we should let him pass */
+   if (eth_type == bpf_ntohs(ETH_P_ARP)) {
+      action = XDP_PASS;
+      goto end;
+   }
+
    if (eth_type != bpf_ntohs(ETH_P_IP)) {
       action = XDP_ABORTED;
       goto end;
