@@ -8,6 +8,8 @@ import random
 import time
 from threading import Thread, Event
 from scapy.all import *
+from scapy.layers.l2 import Ether
+from scapy.layers.inet import IP
 
 
 class Sniffer(Thread):
@@ -39,7 +41,7 @@ class Sniffer(Thread):
         super(Sniffer, self).join(timeout)
 
     def should_stop_sniffer(self, packet):
-        return self.stop_sniffer.isSet()
+        return self.stop_sniffer.is_set()
 
     def print_packet(self, packet):
         print("[!] A packet was reflected from the switch: ")
@@ -64,7 +66,7 @@ def send_packet(iface, addr):
     input("Press the return key to send a packet:")
     print("Sending on interface %s to %s\n" % (iface, str(addr)))
     pkt =  Ether(src=get_if_hwaddr(iface), dst='00:01:02:03:04:05')
-    pkt = pkt /IP(dst=addr)
+    pkt = pkt / IP(dst=addr)
     sendp(pkt, iface=iface, verbose=False)
 
 def main():
@@ -86,7 +88,7 @@ def main():
         print("[*] Stop sniffing")
         listener.join(2.0)
 
-        if listener.isAlive():
+        if listener.is_alive():
             listener.socket.close()
 
 if __name__ == '__main__':
