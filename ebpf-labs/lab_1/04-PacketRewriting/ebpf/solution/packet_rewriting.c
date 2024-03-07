@@ -20,7 +20,7 @@
 #include "log.h"
 
 // Include skeleton file
-#include "packet_parsing.skel.h"
+#include "packet_rewriting.skel.h"
 
 /* TODO 3: Redefine the datarec structure in userspace*/
 struct datarec {
@@ -32,8 +32,8 @@ static int ifindex_iface = 0;
 static __u32 xdp_flags = 0;
 
 static const char *const usages[] = {
-    "hello_world [options] [[--] args]",
-    "hello_world [options]",
+    "packet_rewriting [options] [[--] args]",
+    "packet_rewriting [options]",
     NULL,
 };
 
@@ -56,7 +56,7 @@ void sigint_handler(int sig_no) {
     exit(0);
 }
 
-void poll_stats(struct packet_parsing_bpf *skel) {
+void poll_stats(struct packet_rewriting_bpf *skel) {
     /* TODO 1: get the map file descriptor for the skeleton */
     int map_fd = 0;
     
@@ -92,7 +92,7 @@ void poll_stats(struct packet_parsing_bpf *skel) {
 }
 
 int main(int argc, const char **argv) {
-    struct packet_parsing_bpf *skel = NULL;
+    struct packet_rewriting_bpf *skel = NULL;
     int err;
     const char *iface = NULL;
 
@@ -124,17 +124,17 @@ int main(int argc, const char **argv) {
     }
 
     /* Open BPF application */
-    skel = packet_parsing_bpf__open();
+    skel = packet_rewriting_bpf__open();
     if (!skel) {
         log_fatal("Error while opening BPF skeleton");
         exit(1);
     }
 
     /* Set program type to XDP */
-    bpf_program__set_type(skel->progs.xdp_packet_parsing, BPF_PROG_TYPE_XDP);
+    bpf_program__set_type(skel->progs.xdp_packet_rewriting, BPF_PROG_TYPE_XDP);
 
     /* Load and verify BPF programs */
-    if (packet_parsing_bpf__load(skel)) {
+    if (packet_rewriting_bpf__load(skel)) {
         log_fatal("Error while loading BPF skeleton");
         exit(1);
     }
@@ -157,7 +157,7 @@ int main(int argc, const char **argv) {
     xdp_flags |= XDP_FLAGS_DRV_MODE;
 
     /* Attach the XDP program to the interface */
-    err = bpf_xdp_attach(ifindex_iface, bpf_program__fd(skel->progs.xdp_packet_parsing), xdp_flags, NULL);
+    err = bpf_xdp_attach(ifindex_iface, bpf_program__fd(skel->progs.xdp_packet_rewriting), xdp_flags, NULL);
 
     if (err) {
         log_fatal("Error while attaching the XDP program to the interface");
@@ -172,7 +172,7 @@ int main(int argc, const char **argv) {
 
 cleanup:
     cleanup_ifaces();
-    packet_parsing_bpf__destroy(skel);
+    packet_rewriting_bpf__destroy(skel);
     log_info("Program stopped correctly");
     return -err;
 }
