@@ -1,0 +1,18 @@
+version: "3"
+services:
+  nc-labs:
+    container_name: nc-labs
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: ghcr.io/polimi-netclasses/058172-network-computing-labs:latest
+    tty: true
+    privileged: true
+    network_mode: "host"
+    environment:
+      - DISPLAY=${DISPLAY_ENV}
+    volumes:
+      - ${X11_VOLUME}
+      - /lib/modules:/lib/modules
+      - ../ebpf-labs:/root/ebpf-labs
+      - ../p4-labs:/root/p4-labs
