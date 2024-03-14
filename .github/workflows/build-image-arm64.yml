@@ -12,7 +12,7 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: polimi-netclasses/058172-network-computing-labs
+  IMAGE_NAME: 058172-network-computing-labs
 
 jobs:
   build-docker:
