@@ -58,6 +58,13 @@ RUN git checkout $P4UTIL_VERSION
 RUN chmod +x /root/p4-utils/install-tools/install-p4-dev.sh
 RUN /root/p4-utils/install-tools/install-p4-dev.sh
 
+# Cleanup the files we don't need
+RUN sudo rm -rf /root/p4-tools/ptf /root/p4-tools/protobuf \
+                /root/p4-tools/PI /root/p4-tools/p4c \
+                /root/p4-tools/libyang /root/p4-tools/grpc \
+                /root/p4-tools/frr /root/p4-tools/bmv2 \
+                /root/p4-tools/p4-learning
+
 WORKDIR /root
 
 COPY docker/entrypoint.sh /entrypoint.sh
