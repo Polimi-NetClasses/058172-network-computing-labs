@@ -12,7 +12,7 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: polimi-netclasses/058172-network-computing-labs
 
 jobs:
   build-docker:
@@ -32,12 +32,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Format repo slug
-        uses: actions/github-script@v4
-        id: repo_slug
-        with:
-          result-encoding: string
-          script: return `ghcr.io/${github.repository.toLowerCase()}`
       - name: Build and optionally push Docker Image
         uses: docker/build-push-action@v5
         with:
@@ -46,5 +40,5 @@ jobs:
           platforms: linux/amd64
           push: ${{ github.event_name == 'push' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=registry,ref=${{ steps.repo_slug.outputs.result }}:main
-          cache-to: type=inline
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
