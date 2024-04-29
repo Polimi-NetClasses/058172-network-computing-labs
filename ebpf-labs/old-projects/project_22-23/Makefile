@@ -4,16 +4,16 @@ CLANG ?= clang
 LLVM_STRIP ?= llvm-strip
 SHELL := /bin/bash
 PKG_CONFIG := pkg-config
-LIBBPF_SRC := $(abspath ../libs/libbpf/src)
-BPFTOOL_SRC := $(abspath ../libs/bpftool/src)
-LIBARGPARSE_SRC := $(abspath ../libs/libargparse)
+LIBBPF_SRC := $(abspath ../../libs/libbpf/src)
+BPFTOOL_SRC := $(abspath ../../libs/bpftool/src)
+LIBARGPARSE_SRC := $(abspath ../../libs/libargparse)
 LIBBPF_OBJ := $(abspath $(OUTPUT)/libbpf.a)
 LIBBPF_PKGCONFIG := $(abspath $(OUTPUT)/pkgconfig)
-LIBARGPARSE_OBJ := $(abspath ../libs/libargparse/libargparse.a)
+LIBARGPARSE_OBJ := $(abspath ../../libs/libargparse/libargparse.a)
 LIBLOG_OBJ := $(abspath $(OUTPUT)/liblog.o)
-LIBLOG_SRC := $(abspath ../libs/liblog/src/log.c)
-LIBLOG_HDR := $(abspath ../libs/liblog/src/)
-LIBCYAML_SRC := $(abspath ../libs/libcyaml)
+LIBLOG_SRC := $(abspath ../../libs/liblog/src/log.c)
+LIBLOG_HDR := $(abspath ../../libs/liblog/src/)
+LIBCYAML_SRC := $(abspath ../../libs/libcyaml)
 LIBCYAML_OBJ := $(abspath $(OUTPUT)/libcyaml.a)
 LIBCYAML_DST := $(abspath $(OUTPUT))
 BPFTOOL_OUTPUT ?= $(abspath $(OUTPUT)/bpftool)
@@ -22,12 +22,12 @@ ARCH := $(shell uname -m | sed 's/x86_64/x86/' | sed 's/aarch64/arm64/' | sed 's
 # Use our own libbpf API headers and Linux UAPI headers distributed with
 # libbpf to avoid dependency on system-wide headers, which could be missing or
 # outdated
-# INCLUDES := -I$(OUTPUT) -I../libbpf/include/uapi -I$(OUTPUT)/libxdp/include -I$(LIBARGPARSE_SRC) -I$(dir $(VMLINUX))
-INCLUDES := -I$(OUTPUT) -I../../libs/libbpf/include/uapi -I$(LIBARGPARSE_SRC) -I$(LIBLOG_HDR)
+# INCLUDES := -I$(OUTPUT) -I../../libbpf/include/uapi -I$(OUTPUT)/libxdp/include -I$(LIBARGPARSE_SRC) -I$(dir $(VMLINUX))
+INCLUDES := -I$(OUTPUT) -I../../../libs/libbpf/include/uapi -I$(LIBARGPARSE_SRC) -I$(LIBLOG_HDR)
 CFLAGS := -g -Wall -DLOG_USE_COLOR
 ALL_LDFLAGS := $(LDFLAGS) $(EXTRA_LDFLAGS) 
 
-APPS = l4_lb
+APPS = hhd_v2 xdp_loader
 
 HHDV2_CONFIG_DEPS = libnl-3.0
 HHDV2_PKG_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(HHDV2_CONFIG_DEPS))
